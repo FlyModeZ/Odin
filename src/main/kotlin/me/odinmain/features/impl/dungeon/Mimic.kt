@@ -49,7 +49,7 @@ object Mimic : Module(
     }
 
     private fun mimicKilled() {
-        if (DungeonUtils.mimicKilled || DungeonUtils.inBoss) return
+        if (DungeonUtils.inBoss) return
         if (mimicMessageToggle) partyMessage(mimicMessage)
         currentDungeon?.dungeonStats?.mimicKilled = true
     }
