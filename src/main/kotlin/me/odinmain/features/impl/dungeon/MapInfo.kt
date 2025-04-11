@@ -102,7 +102,8 @@ object MapInfo : Module(
         return when {
             count < 3 -> "§c${count}"
             count < 5 -> "§e${count}"
-            else -> "§a${count}"
+            count < 10 -> "§a${count}"
+            else -> "§a${count}?"
         }
     }
 
@@ -110,7 +111,8 @@ object MapInfo : Module(
         return when {
             score < 270 -> "§c${score}"
             score < 300 -> "§e${score}"
-            else -> "§a${score}"
+            score < 305 -> "§a${score}"
+            else -> "§b${score}"
         }
     }
 
