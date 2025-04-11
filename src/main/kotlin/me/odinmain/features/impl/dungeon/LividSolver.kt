@@ -54,7 +54,7 @@ object LividSolver : Module(
     @SubscribeEvent
     fun onPostMetaData(event: PostEntityMetadata) {
         if (!DungeonUtils.inBoss || !DungeonUtils.isFloor(5)) return
-        currentLivid.entity = (mc.theWorld?.getEntityByID(event.packet.entityId) as? EntityOtherPlayerMP)?.takeIf { it.name == "${currentLivid.entityName} Livid" } ?: return@runIn
+        currentLivid.entity = (mc.theWorld?.getEntityByID(event.packet.entityId) as? EntityOtherPlayerMP)?.takeIf { it.name == "${currentLivid.entityName} Livid" }
     }
 
     private enum class Livid(val entityName: String, val colorCode: Char, val color: Color, val woolMetadata: Int) {
