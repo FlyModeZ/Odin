@@ -31,7 +31,7 @@ object MapInfo : Module(
                 "§7-§c${DungeonUtils.totalSecrets}"
         val unknownSecretsText = if (unknown == 0) "§7Deaths: §c${colorizeDeaths(DungeonUtils.deathCount)}" else "§7Unfound: §e${(DungeonUtils.totalSecrets - DungeonUtils.knownSecrets).coerceAtLeast(0)}"
         val mimicText = "§7Mimic: ${if (DungeonUtils.mimicKilled) "§a✔" else "§c✘"}"
-        val cryptText = "§7Crypts: ${colorizeCrypts(DungeonUtils.cryptCount.coerceAtMost(5))}"
+        val cryptText = "§7Crypts: ${colorizeCrypts(DungeonUtils.cryptCount)}"
 
         val (trText, brText) = if (alternate) listOf(cryptText, scoreText) else listOf(scoreText, cryptText)
 
