@@ -48,13 +48,17 @@ object LividSolver : Module(
     fun onBlockChange(event: BlockChangeEvent) {
         if (!DungeonUtils.inBoss || !DungeonUtils.isFloor(5) || event.updated.block != Blocks.wool || event.pos != woolLocation) return
         currentLivid = Livid.entries.find { livid -> livid.woolMetadata == event.updated.getValue(BlockStainedGlass.COLOR).metadata } ?: return
-        modMessage("Found Livid: §${currentLivid.colorCode}${currentLivid.entityName}")
+        runIn(-20) {
+            modMessage("Found Livid: §${currentLivid.colorCode}${currentLivid.entityName}")
+        }
     }
 
     @SubscribeEvent
     fun onPostMetaData(event: PostEntityMetadata) {
         if (!DungeonUtils.inBoss || !DungeonUtils.isFloor(5)) return
-        currentLivid.entity = (mc.theWorld?.getEntityByID(event.packet.entityId) as? EntityOtherPlayerMP)?.takeIf { it.name == "${currentLivid.entityName} Livid" }
+        runIn(-20) {
+            currentLivid.entity = (mc.theWorld?.getEntityByID(event.packet.entityId) as? EntityOtherPlayerMP)?.takeIf { it.name == "${currentLivid.entityName} Livid" } ?: return@runIn
+        }
     }
 
     private enum class Livid(val entityName: String, val colorCode: Char, val color: Color, val woolMetadata: Int) {
