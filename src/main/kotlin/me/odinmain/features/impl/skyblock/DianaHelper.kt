@@ -64,6 +64,7 @@ object DianaHelper : Module(
         execute(2000) {
             if (!isDoingDiana)
                 isDoingDiana = enabled && LocationUtils.currentArea.isArea(Island.Hub) && hasSpade
+            activeBurrows.keys.removeIf { location -> mc.thePlayer.positionVector.distanceTo(location.toVec3()) > 40}
         }
 
         onPacket<S29PacketSoundEffect> ({ isDoingDiana }) {
