@@ -32,7 +32,7 @@ object CustomHighlight : Module(
     private val scanDelay by NumberSetting("Scan Delay", 100L, 20L, 2000L, 20L, desc = "The delay between entity scans.", unit = "ms")
 
     private val xray by BooleanSetting("Depth Check", false, desc = "Highlights entities through walls.").withDependency { !isLegitVersion }
-    private val showInvisible by BooleanSetting("Show Invisible", false, desc = "Highlights invisible entities.").withDependency { !isLegitVersion }
+    private val showInvisible by BooleanSetting("Show Invisible", false, desc = "Highlights invisible entities. (Unofficial)")
 
     val highlightMap: MutableMap<String, Color?> by MapSetting("highlightMap", mutableMapOf())
 
@@ -59,7 +59,7 @@ object CustomHighlight : Module(
             checkEntity(entity)
             if (starredMobESP) checkStarred(entity)
             if (shadowAssassin && !isLegitVersion) checkAssassin(entity)
-            if (showInvisible && entity.isInvisible && !isLegitVersion && currentEntities.any { it.entity == entity }) entity.isInvisible = false
+            if (showInvisible && entity.isInvisible && currentEntities.any { it.entity == entity }) entity.isInvisible = false
         }
     }
 
