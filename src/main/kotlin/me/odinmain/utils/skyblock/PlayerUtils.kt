@@ -10,6 +10,7 @@ import me.odinmain.utils.ui.Colors
 import net.minecraft.network.play.client.C0EPacketClickWindow
 import net.minecraft.util.Vec3
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import kotlin.math.round
 
 object PlayerUtils {
     var shouldBypassVolume = false
@@ -48,7 +49,7 @@ object PlayerUtils {
     inline val posY get() = mc.thePlayer?.posY ?: 0.0
     inline val posZ get() = mc.thePlayer?.posZ ?: 0.0
 
-    fun getPositionString() = "x: ${posX.toInt()}, y: ${posY.toInt()}, z: ${posZ.toInt()}"
+    fun getPositionString() = "x: ${round(posX - 0.5)}, y: ${posY.toInt()}, z: ${round(posZ - 0.5)}"
 
     private var lastClickSent = 0L
 
