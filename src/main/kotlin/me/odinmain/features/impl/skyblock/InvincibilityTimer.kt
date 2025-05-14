@@ -70,7 +70,7 @@ object InvincibilityTimer : Module(
             else -> return
         }
 
-        if (invincibilityAnnounce) partyMessage("$type Procced")
+        if (invincibilityAnnounce) partyMessage("$type Exploded")
         invincibilityTime = Timer(60, type)
     }
 
