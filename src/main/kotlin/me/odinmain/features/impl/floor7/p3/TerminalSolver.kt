@@ -258,7 +258,7 @@ object TerminalSolver : Module(
 
     @SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGH)
     fun onGuiClick(event: GuiEvent.MouseClick) = with(currentTerm) {
-        modMessage(ClientCommandHandler.instance.commands.map { it.key })
+        // modMessage(ClientCommandHandler.instance.commands.map { it.key })
         if (!enabled || this == null) return
 
         if (renderType == 3 && !(type == TerminalTypes.MELODY && cancelMelodySolver)) {
