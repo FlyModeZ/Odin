@@ -7,11 +7,13 @@ import me.odinmain.utils.clock.Executor
 import me.odinmain.utils.clock.Executor.Companion.register
 import me.odinmain.utils.equalsOneOf
 import me.odinmain.utils.sidebarLines
+import me.odinmain.utils.skyblock.modMessage
 import me.odinmain.utils.skyblock.dungeon.Dungeon
 import me.odinmain.utils.skyblock.dungeon.DungeonUtils
 import me.odinmain.utils.startsWithOneOf
 import net.minecraft.network.play.server.S38PacketPlayerListItem
 import net.minecraft.network.play.server.S3BPacketScoreboardObjective
+import net.minecraft.network.play.server.S3DPacketDisplayScoreboard
 import net.minecraft.network.play.server.S3FPacketCustomPayload
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.EventPriority
@@ -89,6 +91,9 @@ object LocationUtils {
             is S3BPacketScoreboardObjective ->
                 if (!isInSkyblock)
                     isInSkyblock = isOnHypixel && event.packet.func_149339_c() == "SBScoreboard"
+
+            is S3DPacketDisplayScoreboard ->
+                modMessage("${event.packet.func_149370_d()}, ${event.packet.func_149371_c()}")
         }
     }
 }
