@@ -108,6 +108,8 @@ object LocationUtils {
                 val clazz = S3EPacketTeams::class.java
                 val methods = clazz.declaredMethods
                 for (method in methods) {
+                    val parameterTypes = method.parameterTypes
+                    val returnType = method.returnType
                     modMessage("Method: ${method.name} | ${parameterTypes.joinToString(", ") { it.simpleName }} | ${returnType.simpleName}")
                 }
             }
