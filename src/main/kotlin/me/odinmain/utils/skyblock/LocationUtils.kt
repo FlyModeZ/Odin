@@ -104,8 +104,8 @@ object LocationUtils {
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
 
-            is S3EPacketTeams -> 
-                modMessage("${event.packet.func_149307_h()}§r, ${event.packet.func_149309_f()}§r, ${event.packet.func_149311_e()}§r, ${event.packet.func_149308_i()}§r, ${event.packet.func_149306_d()}§r, ${event.packet.func_179814_i()}§r, ${event.packet.func_149310_g()}§r, ${event.packet.func_179813_h()}§r, ${event.packet.func_149312_c()}")
+            is S3EPacketTeams -> { modMessage("${event.packet.func_149306_d()}")}
+
         }
     }
 }
