@@ -104,7 +104,10 @@ object LocationUtils {
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
 
-            is S3EPacketTeams -> { modMessage("${(event.packet.prefix.plus(event.packet.suffix))}")}
+            is S3EPacketTeams -> {
+                // getAction() 
+                modMessage("${event.packet.getAction()}§r, ${event.packet.getColor()}§r, ${event.packet.getColor()}§r, ${event.packet.getDisplayName()}§r, ${event.packet.getFriendlyFlags()}§r, ${event.packet.getName()}§r, ${event.packet.getNameTagVisibility()}§r, ${event.packet.getPlayers()}§r, ${event.packet.getPrefix()}§r, ${event.packet.getSuffix()}")
+            }
 
         }
     }
