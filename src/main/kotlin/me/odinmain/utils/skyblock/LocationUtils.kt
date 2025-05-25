@@ -22,6 +22,8 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.FMLNetworkEvent
 
+import java.lang.reflect.Method;
+
 object LocationUtils {
     var isOnHypixel: Boolean = false
         private set
@@ -102,8 +104,12 @@ object LocationUtils {
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
 
-            is S3EPacketTeams ->
-                modMessage("${event.packet.func_149306_d()}") //?
+            is S3EPacketTeams -> {
+                Method[] methods = S3EPacketTeams.class.getDeclaredMethods()
+                for (Method method : methods) {
+                    modMessage(method.getName())
+                }
+            }
         }
     }
 }
