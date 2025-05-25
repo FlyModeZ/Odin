@@ -89,13 +89,16 @@ object LocationUtils {
             }
 
             is S3BPacketScoreboardObjective -> {
-                modMessage("${event.packet.func_149337_d()}, ${event.packet.func_149338_e()}, ${event.packet.func_149339_c()}")
+                modMessage("${event.packet.func_149337_d()}§r, ${event.packet.func_149338_e()}§r, ${event.packet.func_149339_c()}")
                 if (!isInSkyblock)
                     isInSkyblock = isOnHypixel && event.packet.func_149339_c() == "SBScoreboard"
             }
 
+            is S3CPacketUpdateScore ->
+                modMessage("${getObjectiveName()}§r, ${getPlayerName()}§r, ${getScoreAction()}§r, ${getScoreValue()}")
+
             is S3DPacketDisplayScoreboard ->
-                modMessage("${event.packet.func_149370_d()}, ${event.packet.func_149371_c()}")
+                modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
         }
     }
 }
