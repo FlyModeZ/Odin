@@ -13,6 +13,7 @@ import me.odinmain.utils.skyblock.dungeon.DungeonUtils
 import me.odinmain.utils.startsWithOneOf
 import net.minecraft.network.play.server.S38PacketPlayerListItem
 import net.minecraft.network.play.server.S3BPacketScoreboardObjective
+import net.minecraft.network.play.server.S3CPacketUpdateScore
 import net.minecraft.network.play.server.S3DPacketDisplayScoreboard
 import net.minecraft.network.play.server.S3FPacketCustomPayload
 import net.minecraftforge.event.world.WorldEvent
@@ -95,7 +96,7 @@ object LocationUtils {
             }
 
             is S3CPacketUpdateScore ->
-                modMessage("${getObjectiveName()}§r, ${getPlayerName()}§r, ${getScoreAction()}§r, ${getScoreValue()}")
+                modMessage("${event.packet.getObjectiveName()}§r, ${event.packet.getPlayerName()}§r, ${event.packet.getScoreAction()}§r, ${event.packet.getScoreValue()}")
 
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
