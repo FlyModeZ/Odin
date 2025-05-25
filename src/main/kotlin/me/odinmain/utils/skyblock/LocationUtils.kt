@@ -16,6 +16,7 @@ import net.minecraft.network.play.server.S3BPacketScoreboardObjective
 import net.minecraft.network.play.server.S3CPacketUpdateScore
 import net.minecraft.network.play.server.S3DPacketDisplayScoreboard
 import net.minecraft.network.play.server.S3FPacketCustomPayload
+import net.minecraft.network.play.server.S3EPacketTeams
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -100,6 +101,9 @@ object LocationUtils {
 
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
+
+            is S3EPacketTeams ->
+                modMessage("${event.packet.func_149306_d()}§r, ${event.packet.func_149307_h()}§r, ${event.packet.func_149308_i()}§r, ${event.packet.func_149309_f()}§r, ${event.packet.func_149310_g()}§r, ${event.packet.func_149311_e()}§r, ${event.packet.func_149312_c()}§r, ${event.packet.func_179813_h()}§r, ${event.packet.func_179814_i()}")
         }
     }
 }
