@@ -88,9 +88,11 @@ object LocationUtils {
                 if (DungeonUtils.inDungeons && currentDungeon == null) currentDungeon = Dungeon()
             }
 
-            is S3BPacketScoreboardObjective ->
+            is S3BPacketScoreboardObjective -> {
                 modMessage("${event.packet.func_149337_d()}, ${event.packet.func_149338_e()}, ${event.packet.func_149339_c()}")
-                if (!isInSkyblock) { isInSkyblock = isOnHypixel && event.packet.func_149339_c() == "SBScoreboard"}
+                if (!isInSkyblock)
+                    isInSkyblock = isOnHypixel && event.packet.func_149339_c() == "SBScoreboard"
+            }
 
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}, ${event.packet.func_149371_c()}")
