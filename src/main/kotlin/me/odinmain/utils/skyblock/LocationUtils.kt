@@ -104,7 +104,7 @@ object LocationUtils {
             is S3DPacketDisplayScoreboard ->
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
 
-            is S3EPacketTeams -> { modMessage("${event.packet.func_149306_d()}")}
+            is S3EPacketTeams -> { modMessage("${(event.packet.prefix.plus(event.packet.suffix))}")}
 
         }
     }
