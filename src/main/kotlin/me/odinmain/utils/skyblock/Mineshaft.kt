@@ -1,7 +1,7 @@
 package me.odinmain.utils.skyblock
 
 class Mineshaft {
-    val corpseList = mutableListOf()
+    val corpseList: MutableList<String> = mutableListOf()
     var corpseCount = 0  
     var shaftType = ""
 }
