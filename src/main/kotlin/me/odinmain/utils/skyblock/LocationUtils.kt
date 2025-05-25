@@ -89,6 +89,7 @@ object LocationUtils {
             }
 
             is S3BPacketScoreboardObjective ->
+                modMessage("${event.packet.func_149337_d()}, ${event.packet.func_149338_e()}, ${event.packet.func_149339_c()}")
                 if (!isInSkyblock)
                     isInSkyblock = isOnHypixel && event.packet.func_149339_c() == "SBScoreboard"
 
