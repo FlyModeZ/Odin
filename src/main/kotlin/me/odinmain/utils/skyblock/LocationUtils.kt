@@ -105,8 +105,8 @@ object LocationUtils {
                 modMessage("${event.packet.func_149370_d()}§r, ${event.packet.func_149371_c()}")
 
             is S3EPacketTeams -> {
-                val clazz = S3EPacketTeams::class
-                val methods = clazz.declaredFunctions
+                val clazz = S3EPacketTeams::class.java
+                val methods = clazz.declaredMethods
                 for (method in methods) {
                     modMessage(method.name)
                 }
