@@ -54,7 +54,7 @@ object TickTimers : Module(
 
     private val oneSecDungeonsOnly by BooleanSetting("Dungeons Only", false, desc = "Show the 1sec timer only in dungeons")
 
-    private var oneSecTime: Int = 20
+    private var oneSecTime: Int = -1
 
     init {
         onMessage(Regex("^\\[BOSS] Necron: I'm afraid, your journey ends now\\.$"), { enabled && necronHud.enabled && DungeonUtils.inDungeons }) { necronTime = 60 }
@@ -89,6 +89,7 @@ object TickTimers : Module(
             goldorTickTime = -1
             goldorStartTime = -1
             padTickTime = -1
+            oneSecTime = 20
         }
     }
 
