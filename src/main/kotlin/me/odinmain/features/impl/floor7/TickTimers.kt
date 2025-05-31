@@ -48,7 +48,7 @@ object TickTimers : Module(
 
     private val oneSecHud by HudSetting("1Sec Timer Hud", 10f, 10f, 1f, true) {
         if (it)                    mcTextAndWidth(formatTimer(12, 20, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
-        else if (padTickTime >= 0 && (!oneSecDungeonsOnly || DungeonUtils.inDungeons)) mcTextAndWidth(formatTimer(oneSecTime, 20, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
+        else if (oneSecTime >= 0 && (!oneSecDungeonsOnly || DungeonUtils.inDungeons)) mcTextAndWidth(formatTimer(oneSecTime, 20, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
         else 0f to 0f
     }
 
