@@ -46,6 +46,16 @@ object TickTimers : Module(
 
     private var padTickTime: Int = -1
 
+    private val oneSecHud by HudSetting("1Sec Timer Hud", 10f, 10f, 1f, true) {
+        if (it)                    mcTextAndWidth(formatTimer(12, 20, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
+        else if (padTickTime >= 0 && (!oneSecDungeonsOnly || DungeonUtils.inDungeons)) mcTextAndWidth(formatTimer(oneSecTime, 20, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
+        else 0f to 0f
+    }
+
+    private val oneSecDungeonsOnly by BooleanSetting("Dungeons Only", false, desc = "Show the 1sec timer only in dungeons").withDependency {oneSecHud}
+
+    private var oneSecTime: Int = 20
+
     init {
         onMessage(Regex("^\\[BOSS] Necron: I'm afraid, your journey ends now\\.$"), { enabled && necronHud.enabled && DungeonUtils.inDungeons }) { necronTime = 60 }
 
@@ -64,6 +74,8 @@ object TickTimers : Module(
         onMessage(Regex("^\\[BOSS] Storm: Pathetic Maxor, just like expected\\.$"), { enabled && stormHud.enabled && DungeonUtils.inDungeons }) { padTickTime = 20 }
 
         onPacket<S32PacketConfirmTransaction> {
+            if (oneSecTime >= 0 && oneSecHud.enabled) oneSecTime--
+            if (oneSecTime == 0 && oneSecHud.enabled) oneSecTime = 20
             if (necronTime >= 0 && necronHud.enabled) necronTime--
             if (padTickTime >= 0 && stormHud.enabled) padTickTime--
             if (padTickTime == 0 && stormHud.enabled) padTickTime = 20
