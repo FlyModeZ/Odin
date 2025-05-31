@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import me.odinmain.OdinMain.logger
 import me.odinmain.features.impl.render.DevPlayers
+import me.odinmain.utils.skyblock.modMessage
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
@@ -130,12 +131,16 @@ fun downloadFile(url: String, outputPath: String) {
     }
 }
 
-suspend fun hasBonusPaulScore(): Boolean = withTimeoutOrNull(5000) {
-    val response: String = URL("https://api.hypixel.net/resources/skyblock/election").readText()
-    val jsonObject = JsonParser().parse(response).asJsonObject
-    val mayor = jsonObject.getAsJsonObject("mayor") ?: return@withTimeoutOrNull false
-    val name = mayor.get("name")?.asString ?: return@withTimeoutOrNull false
-    return@withTimeoutOrNull if (name == "Paul") {
-        mayor.getAsJsonArray("perks")?.any { it.asJsonObject.get("name")?.asString == "EZPZ" } == true
-    } else false
-} == true
+suspend fun hasBonusPaulScore(): Boolean {
+    val paul = withTimeoutOrNull(10_000) {
+        val response: String = URL("https://api.hypixel.net/resources/skyblock/election").readText()
+        val jsonObject = JsonParser().parse(response).asJsonObject
+        val mayor = jsonObject.getAsJsonObject("mayor") ?: return@withTimeoutOrNull false
+        val name = mayor.get("name")?.asString ?: return@withTimeoutOrNull false
+        return@withTimeoutOrNull if (name == "Paul") {
+            mayor.getAsJsonArray("perks")?.any { it.asJsonObject.get("name")?.asString == "EZPZ" } == true
+        } else false
+    } == true
+    modMessage("Bonus Paul Score: ${paul}")
+    return paul
+}
