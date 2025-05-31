@@ -52,7 +52,7 @@ object TickTimers : Module(
         else 0f to 0f
     }
 
-    private val oneSecDungeonsOnly by BooleanSetting("Dungeons Only", false, desc = "Show the 1sec timer only in dungeons").withDependency {oneSecHud}
+    private val oneSecDungeonsOnly by BooleanSetting("Dungeons Only", false, desc = "Show the 1sec timer only in dungeons")
 
     private var oneSecTime: Int = 20
 
