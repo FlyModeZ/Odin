@@ -12,6 +12,7 @@ import me.odinmain.utils.render.Renderer
 import me.odinmain.utils.runIn
 import me.odinmain.utils.skyblock.*
 import me.odinmain.utils.skyblock.DianaBurrowEstimate.activeBurrows
+import me.odinmain.utils.getPositionEyes
 import me.odinmain.utils.toVec3
 import me.odinmain.utils.ui.Colors
 import me.odinmain.utils.ui.clickgui.util.ColorUtil.withAlpha
@@ -64,6 +65,7 @@ object DianaHelper : Module(
         execute(2000) {
             if (!isDoingDiana)
                 isDoingDiana = enabled && LocationUtils.currentArea.isArea(Island.Hub) && hasSpade
+            activeBurrows.keys.removeIf{it.toVec3().distanceTo(getPositionEyes()) > 48}
         }
 
         onPacket<S29PacketSoundEffect> ({ isDoingDiana }) {
