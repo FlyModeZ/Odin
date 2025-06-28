@@ -45,7 +45,17 @@ object TickTimers : Module(
     }
 
     private var padTickTime: Int = -1
+    
+    private val twoSecHud by HudSetting("2Sec Timer Hud", 10f, 10f, 1f, true) {
+        if (it)                    mcTextAndWidth(formatTimer(12, 20, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
+        else if (twoSecTime >= 0 && (!twoSecDungeonsOnly || DungeonUtils.inDungeons)) mcTextAndWidth(formatTimer(twoSecTime, 40, ""), 1f, 1f, 2, Colors.MINECRAFT_DARK_RED, shadow = true ,center = false) * 2 + 2f to 16f
+        else 0f to 0f
+    }
 
+    private val twoSecDungeonsOnly by BooleanSetting("Dungeons Only", false, desc = "Show the 1sec timer only in dungeons")
+
+    private var twoSecTime: Int = -1
+    
     init {
         onMessage(Regex("^\\[BOSS] Necron: I'm afraid, your journey ends now\\.$"), { enabled && necronHud.enabled && DungeonUtils.inDungeons }) { necronTime = 60 }
 
@@ -64,6 +74,8 @@ object TickTimers : Module(
         onMessage(Regex("^\\[BOSS] Storm: Pathetic Maxor, just like expected\\.$"), { enabled && stormHud.enabled && DungeonUtils.inDungeons }) { padTickTime = 20 }
 
         onPacket<S32PacketConfirmTransaction> {
+            if (twoSecTime >= 0 && twoSecHud.enabled) twoSecTime--
+            if (twoSecTime == 0 && twoSecHud.enabled) twoSecTime = 40
             if (necronTime >= 0 && necronHud.enabled) necronTime--
             if (padTickTime >= 0 && stormHud.enabled) padTickTime--
             if (padTickTime == 0 && stormHud.enabled) padTickTime = 20
@@ -77,6 +89,7 @@ object TickTimers : Module(
             goldorTickTime = -1
             goldorStartTime = -1
             padTickTime = -1
+            twoSecTime = 40
         }
     }
 

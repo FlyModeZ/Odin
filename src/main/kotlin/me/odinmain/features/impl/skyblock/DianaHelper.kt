@@ -12,6 +12,7 @@ import me.odinmain.utils.render.Renderer
 import me.odinmain.utils.runIn
 import me.odinmain.utils.skyblock.*
 import me.odinmain.utils.skyblock.DianaBurrowEstimate.activeBurrows
+import me.odinmain.utils.getPositionEyes
 import me.odinmain.utils.toVec3
 import me.odinmain.utils.ui.Colors
 import me.odinmain.utils.ui.clickgui.util.ColorUtil.withAlpha
@@ -51,6 +52,7 @@ object DianaHelper : Module(
     private val autoWarp by BooleanSetting("Auto Warp", desc = "Automatically warps you to the nearest warp location after you activate the spade ability.").withDependency { !isLegitVersion }
     private val autoWarpWaitTime by NumberSetting("Auto Warp Wait Time", 2f, 0.2, 10.0, 0.1, unit = "s", desc = "Time to wait before warping.").withDependency { autoWarp }
     private val resetBurrows by ActionSetting("Reset Burrows", desc = "Removes all the current burrows.") { activeBurrows.clear() }
+    private val removeFarBurrows by BooleanSetting("Remove Far Burrows", desc = "Automatically remove far burrows.")
     private var warpLocation: WarpPoint? = null
 
     private var isDoingDiana: Boolean = false
@@ -64,6 +66,8 @@ object DianaHelper : Module(
         execute(2000) {
             if (!isDoingDiana)
                 isDoingDiana = enabled && LocationUtils.currentArea.isArea(Island.Hub) && hasSpade
+            if (removeFarBurrows)
+                activeBurrows.keys.removeIf{it.toVec3().distanceTo(getPositionEyes()) > 48}
         }
 
         onPacket<S29PacketSoundEffect> ({ isDoingDiana }) {

@@ -130,7 +130,7 @@ fun downloadFile(url: String, outputPath: String) {
     }
 }
 
-suspend fun hasBonusPaulScore(): Boolean = withTimeoutOrNull(5000) {
+suspend fun hasBonusPaulScore(): Boolean = withTimeoutOrNull(12_000) {
     val response: String = URL("https://api.hypixel.net/resources/skyblock/election").readText()
     val jsonObject = JsonParser().parse(response).asJsonObject
     val mayor = jsonObject.getAsJsonObject("mayor") ?: return@withTimeoutOrNull false

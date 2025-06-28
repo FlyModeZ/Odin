@@ -34,7 +34,7 @@ object LividSolver : Module(
 
     init {
         HighlightRenderer.addEntityGetter({ HighlightRenderer.HighlightType.entries[mode] }) {
-            if (!enabled || mc.thePlayer.isPotionActive(Potion.blindness)) return@addEntityGetter emptyList()
+            if (!enabled) return@addEntityGetter emptyList()
             currentLivid.entity?.let { listOf(HighlightRenderer.HighlightEntity(it, currentLivid.color, thickness, OdinMain.isLegitVersion, style)) } ?: emptyList()
         }
 
@@ -48,17 +48,13 @@ object LividSolver : Module(
     fun onBlockChange(event: BlockChangeEvent) {
         if (!DungeonUtils.inBoss || !DungeonUtils.isFloor(5) || event.updated.block != Blocks.wool || event.pos != woolLocation) return
         currentLivid = Livid.entries.find { livid -> livid.woolMetadata == event.updated.getValue(BlockStainedGlass.COLOR).metadata } ?: return
-        runIn((mc.thePlayer?.getActivePotionEffect(Potion.blindness)?.duration ?: 0) - 20) {
-            modMessage("Found Livid: §${currentLivid.colorCode}${currentLivid.entityName}")
-        }
+        modMessage("Found Livid: §${currentLivid.colorCode}${currentLivid.entityName}")
     }
 
     @SubscribeEvent
     fun onPostMetaData(event: PostEntityMetadata) {
         if (!DungeonUtils.inBoss || !DungeonUtils.isFloor(5)) return
-        runIn((mc.thePlayer?.getActivePotionEffect(Potion.blindness)?.duration ?: 0) - 20) {
-            currentLivid.entity = (mc.theWorld?.getEntityByID(event.packet.entityId) as? EntityOtherPlayerMP)?.takeIf { it.name == "${currentLivid.entityName} Livid" } ?: return@runIn
-        }
+        currentLivid.entity = (mc.theWorld?.getEntityByID(event.packet.entityId) as? EntityOtherPlayerMP)?.takeIf { it.name == "${currentLivid.entityName} Livid" } ?: return
     }
 
     private enum class Livid(val entityName: String, val colorCode: Char, val color: Color, val woolMetadata: Int) {

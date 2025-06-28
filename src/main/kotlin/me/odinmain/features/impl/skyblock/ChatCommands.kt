@@ -1,6 +1,7 @@
 package me.odinmain.features.impl.skyblock
 
 import me.odinmain.events.impl.MessageSentEvent
+import me.odinmain.events.impl.PacketEvent
 import me.odinmain.features.Module
 import me.odinmain.features.impl.dungeon.DungeonRequeue.disableRequeue
 import me.odinmain.features.settings.Setting.Companion.withDependency
@@ -13,6 +14,7 @@ import me.odinmain.utils.noControlCodes
 import me.odinmain.utils.runIn
 import me.odinmain.utils.skyblock.*
 import net.minecraft.event.ClickEvent
+import net.minecraft.network.play.client.C01PacketChatMessage
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -56,7 +58,9 @@ object ChatCommands : Module(
     private val promote by BooleanSetting("Promote", false, desc = "Executes the /party promote command.").withDependency { showSettings }
     private val location by BooleanSetting("Location", true, desc = "Sends your current location.").withDependency { showSettings }
     private val holding by BooleanSetting("Holding", true, desc = "Sends the item you are holding.").withDependency { showSettings }
+    private val noMoreLocraw by BooleanSetting("No More Locraw", false, desc = "Only allow one /locraw per world.")
 
+    private var locrawSent = false
     private val dtReason = mutableListOf<Pair<String, String>>()
     val blacklist: MutableList<String> by ListSetting("Blacklist", mutableListOf())
 
@@ -90,7 +94,10 @@ object ChatCommands : Module(
             runIn(5) { handleChatCommands(msg, ign, channel) }
         }
 
-        onWorldLoad { dtReason.clear() }
+        onWorldLoad {
+            locrawSent = false
+            dtReason.clear()
+        }
     }
 
     private fun handleChatCommands(message: String, name: String, channel: ChatChannel) {
@@ -183,6 +190,18 @@ object ChatCommands : Module(
 
         event.isCanceled = true
         sendChatMessage(words.joinToString(" "))
+    }
+
+    @SubscribeEvent
+    fun onPacket(event: PacketEvent.Send) {
+        val packet = event.packet as? C01PacketChatMessage ?: return
+        if (!noMoreLocraw || packet.message != "/locraw") return
+        if (locrawSent) {
+            event.isCanceled = true
+            devMessage("locraw cancelled .w.")
+        } else {
+            locrawSent = true
+        }
     }
 
     private val replacements = mapOf(
