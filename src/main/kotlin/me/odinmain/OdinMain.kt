@@ -74,8 +74,8 @@ object OdinMain {
         val name = mc.session?.username?.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
         scope.launch(Dispatchers.IO) {
             DungeonWaypointConfig.loadConfig()
-            ClickGUIModule.latestVersionNumber = ClickGUIModule.checkNewerVersion(VERSION)
-            sendDataToServer(body = """{"username": "$name", "version": "${if (isLegitVersion) "legit" else "cheater"} $VERSION"}""")
+            // ClickGUIModule.latestVersionNumber = ClickGUIModule.checkNewerVersion(VERSION)
+            // sendDataToServer(body = """{"username": "$name", "version": "${if (isLegitVersion) "legit" else "cheater"} $VERSION"}""")
         }
     }
 
