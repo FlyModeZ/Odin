@@ -48,12 +48,12 @@ object SpiritBear : Module(
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss || !blockLocations.contains(event.pos)) return
         when {
             event.updated.block == Blocks.sea_lantern && event.old.block == Blocks.coal_block -> {
-                if (kills <= maxKills) kills ++
+                if (kills < maxKills) kills ++
                 if (event.pos == lastBlockLocation) timer = 68
             }
 
             event.updated.block == Blocks.coal_block && event.old.block == Blocks.sea_lantern -> {
-                if (kills >= 0) kills --
+                if (kills > 0) kills --
                 if (event.pos == lastBlockLocation) timer = -1
             }
         }
