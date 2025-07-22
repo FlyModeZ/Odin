@@ -17,15 +17,15 @@ object SpiritBear : Module(
     name = "Spirit Bear",
     desc = "Displays the current state of Spirit Bear."
 ) {
-    private val hud by HudSetting("Hud", 10f, 10f, 1f, true) { example ->
+    private val hud by HudSetting("Hud", 10f, 10f, 1f, false) { example ->
         when {
             example -> "§7Sleeping zzz"
             !DungeonUtils.isFloor(4) || !DungeonUtils.inBoss -> null
-            timer > 0 -> "§6${(timer / 20f).toFixed()}s"
-            timer == 0 -> "§aAlive!"
-            else -> "§c$kills/$maxKills Kills"
+            timer < 0 -> "§b$kills/$maxKills Kills"
+            timer > 0 -> "§e${(timer / 20f).toFixed()}s"
+            else -> "§aAlive!"
         }?.let { text ->
-            mcTextAndWidth("§eSpirit Bear: $text", 0f, 0f, 1f, Colors.WHITE, center = false) + 2f to 12f
+            mcTextAndWidth("§6Spirit Bear: $text", 0f, 0f, 1f, Colors.WHITE, center = false) + 2f to 12f
         } ?: (0f to 0f)
     }
 
