@@ -21,7 +21,7 @@ object SpiritBear : Module(
         when {
             example -> "§7Sleeping zzz"
             !DungeonUtils.isFloor(4) || !DungeonUtils.inBoss -> null
-            timer < 0 -> "§d$kills/$maxKills Kills"
+            timer < 0 -> "§d$kills/$maxKills"
             timer > 0 -> "§e${(timer / 20f).toFixed()}s"
             else -> "§aAlive!"
         }?.let { text ->
