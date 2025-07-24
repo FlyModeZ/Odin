@@ -5,6 +5,7 @@ import me.odinmain.events.impl.BlockChangeEvent
 import me.odinmain.features.Module
 import me.odinmain.features.settings.impl.BooleanSetting
 import me.odinmain.features.settings.impl.HudSetting
+import me.odinmain.features.settings.impl.NumberSetting
 import me.odinmain.utils.offset
 import me.odinmain.utils.skyblock.dungeon.DungeonUtils
 import me.odinmain.utils.render.mcTextAndWidth
@@ -41,6 +42,7 @@ object SpiritBear : Module(
     }
     private val boxSpawn by BooleanSetting("Box Spawn", true, desc = "早上好中国现在我有冰淇淋")
     private val logBoss by BooleanSetting("Lob Boss", true, desc = "早上好中国现在我有冰淇淋")
+    private val centerPos by NumberSetting("super debug center pos", 5.5f, 5.0f, 5.5f, 0.1f, desc = "你好你好")
 
     private val boxLocation = AxisAlignedBB(5.8, 70.8, 5.8, 5.2, 69.0, 5.2)
     private val lastBlockLocation = BlockPos(7, 77, 34)
@@ -68,7 +70,7 @@ object SpiritBear : Module(
         when {
             event.updated.block == Blocks.sea_lantern && event.old.block == Blocks.coal_block -> {
                 if (kills < maxKills) kills ++
-                if (event.pos == lastBlockLocation) { timer = 68; modMessage("Thorn: §d${boss?.let {it.positionVector.distanceTo(Vec3(5.5, it.positionVector.yCoord, 5.5))}}; ${boss?.positionVector}") }
+                if (event.pos == lastBlockLocation) { timer = 68; modMessage("Thorn: §d${boss?.let {it.positionVector.distanceTo(Vec3(centerPos.toDouble(), it.positionVector.yCoord, centerPos.toDouble()))}}; ${boss?.positionVector}") }
             }
 
             event.updated.block == Blocks.coal_block && event.old.block == Blocks.sea_lantern -> {
@@ -81,7 +83,7 @@ object SpiritBear : Module(
     @SubscribeEvent
     fun onEntityJoin(event: EntityJoinWorldEvent) {
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss) return
-        if (event.entity.name.contains("Bear")) modMessage("${event.entity.name}: §d${event.entity.positionVector.distanceTo(Vec3(5.5, event.entity.positionVector.yCoord, 5.5))}; ${event.entity.positionVector}")
+        if (event.entity.name.contains("Bear")) modMessage("${event.entity.name}: §d${event.entity.positionVector.distanceTo(Vec3(centerPos.toDouble(), event.entity.positionVector.yCoord, centerPos.toDouble())}; ${event.entity.positionVector}")
         boss = event.entity as? EntityGhast ?: return
         modMessage("found thorn uwu")
     }
