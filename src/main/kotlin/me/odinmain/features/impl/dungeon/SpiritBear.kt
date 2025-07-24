@@ -39,7 +39,7 @@ object SpiritBear : Module(
             mcTextAndWidth("§6Spirit Bear: $text", 0f, 0f, 1f, Colors.WHITE, center = false) + 2f to 12f
         } ?: (0f to 0f)
     }
-    private val boxSpawn by BooleanSetting("Box Spawn", true, desc = "早上好中国现在我有冰淇淋")
+    private val boxSpawn by BooleanSetting("Box Spawn", true, desc = "早上好中国现在我有冰淇淋2")
 
     private val boxLocation = AxisAlignedBB(5.8, 70.8, 5.8, 5.2, 69.0, 5.2)
     private val lastBlockLocation = BlockPos(7, 77, 34)
