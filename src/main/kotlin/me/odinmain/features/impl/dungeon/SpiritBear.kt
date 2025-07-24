@@ -83,7 +83,7 @@ object SpiritBear : Module(
     @SubscribeEvent
     fun onEntityJoin(event: EntityJoinWorldEvent) {
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss) return
-        if (event.entity.name.contains("Bear")) modMessage("${event.entity.name}: §d${event.entity.positionVector.distanceTo(Vec3(centerPos.toDouble(), event.entity.positionVector.yCoord, centerPos.toDouble())}; ${event.entity.positionVector}")
+        if (event.entity.name.contains("Bear")) modMessage("${event.entity.name}: §d${event.entity.positionVector.distanceTo(Vec3(centerPos.toDouble(), event.entity.positionVector.yCoord, centerPos.toDouble()))}; ${event.entity.positionVector}")
         boss = event.entity as? EntityGhast ?: return
         modMessage("found thorn uwu")
     }
