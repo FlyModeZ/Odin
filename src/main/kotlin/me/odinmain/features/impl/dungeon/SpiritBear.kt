@@ -39,7 +39,8 @@ object SpiritBear : Module(
             mcTextAndWidth("§6Spirit Bear: $text", 0f, 0f, 1f, Colors.WHITE, center = false) + 2f to 12f
         } ?: (0f to 0f)
     }
-    private val boxSpawn by BooleanSetting("Box Spawn", true, desc = "早上好中国现在我有冰淇淋2")
+    private val boxSpawn by BooleanSetting("Box Spawn", true, desc = "早上好中国现在我有冰淇淋")
+    private val logBoss by BooleanSetting("Lob Boss", true, desc = "早上好中国现在我有冰淇淋")
 
     private val boxLocation = AxisAlignedBB(5.8, 70.8, 5.8, 5.2, 69.0, 5.2)
     private val lastBlockLocation = BlockPos(7, 77, 34)
@@ -54,7 +55,10 @@ object SpiritBear : Module(
     private var box = boxLocation
 
     init {
-        onPacket<S32PacketConfirmTransaction> { if (timer > 0) timer -- }
+        onPacket<S32PacketConfirmTransaction> {
+            if (timer > 0) timer --
+            if (logBoss) modMessage("${boss?.positionVector?.xCoord?.toFixed()}, ${boss?.positionVector?.yCoord?.toFixed()}, ${boss?.positionVector?.zCoord?.toFixed()}")
+        }
         onWorldLoad { kills = 0; timer = -1; boss = null; box = boxLocation }
     }
 
@@ -87,4 +91,6 @@ object SpiritBear : Module(
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss || !boxSpawn/* || timer < 0*/) return
         Renderer.drawStyledBox(box, Colors.MINECRAFT_GOLD, 1)
     }
+
+
 }
