@@ -85,6 +85,6 @@ object SpiritBear : Module(
     @SubscribeEvent
     fun onRenderWorld(event: RenderWorldLastEvent) {
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss || !boxSpawn/* || timer < 0*/) return
-            Renderer.drawBox(box, Colors.MINECRAFT_GOLD)
+        Renderer.drawBox(box, Colors.MINECRAFT_GOLD)
     }
 }
