@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks
 import net.minecraft.network.play.server.S32PacketConfirmTransaction
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.BlockPos
+import net.minecraft.util.Vec3
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -54,7 +55,7 @@ object SpiritBear : Module(
 
     init {
         onPacket<S32PacketConfirmTransaction> { if (timer > 0) timer -- }
-        onWorldLoad { kills = 0; timer = -1 }
+        onWorldLoad { kills = 0; timer = -1; boss = null; box = boxLocation }
     }
 
     @SubscribeEvent
@@ -63,7 +64,7 @@ object SpiritBear : Module(
         when {
             event.updated.block == Blocks.sea_lantern && event.old.block == Blocks.coal_block -> {
                 if (kills < maxKills) kills ++
-                if (event.pos == lastBlockLocation) { timer = 68; modMessage("Thorn: §d${boss?.positionVector}") }
+                if (event.pos == lastBlockLocation) { timer = 68; modMessage("Thorn: §d${boss?.let {it.positionVector.distanceTo(Vec3(5.5, it.positionVector.yCoord, 5.5))}}; ${boss?.positionVector}") }
             }
 
             event.updated.block == Blocks.coal_block && event.old.block == Blocks.sea_lantern -> {
@@ -76,7 +77,7 @@ object SpiritBear : Module(
     @SubscribeEvent
     fun onEntityJoin(event: EntityJoinWorldEvent) {
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss) return
-        if (event.entity.name.contains("Bear")) modMessage("${event.entity.name}: §d${event.entity.positionVector}")
+        if (event.entity.name.contains("Bear")) modMessage("${event.entity.name}: §d${event.entity.positionVector.distanceTo(Vec3(5.5, event.entity.positionVector.yCoord, 5.5))}; ${event.entity.positionVector}")
         boss = event.entity as? EntityGhast ?: return
         modMessage("found thorn uwu")
     }
@@ -84,6 +85,6 @@ object SpiritBear : Module(
     @SubscribeEvent
     fun onRenderWorld(event: RenderWorldLastEvent) {
         if (!DungeonUtils.isFloor(4) || !DungeonUtils.inBoss || !boxSpawn/* || timer < 0*/) return
-        Renderer.drawBox(box, Colors.MINECRAFT_GOLD)
+        Renderer.drawStyledBox(box, Colors.MINECRAFT_GOLD, 1)
     }
 }
