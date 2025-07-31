@@ -33,7 +33,7 @@ object MapInfo : Module(
                 "§7-§e${if (fullRemaining != 0 || (fullAddRemaining && alternate)) DungeonUtils.neededSecretsAmount else (DungeonUtils.neededSecretsAmount - DungeonUtils.secretCount).coerceAtLeast(0)}"+
                 "§7-§c${DungeonUtils.totalSecrets}"
         val unknownSecretsText = if (unknown == 0) "§7Deaths: §c${colorizeDeaths(DungeonUtils.deathCount)}" else "§7Unfound: §e${(DungeonUtils.totalSecrets - DungeonUtils.knownSecrets).coerceAtLeast(0)}"
-        val mimicText = "§7Mimic: ${if (DungeonUtils.mimicKilled) "§a✔" else "§c✘"}"
+        val mimicText = "§7M: ${if (DungeonUtils.mimicKilled) "§a✔" else "§c✘"} §8| §7P: ${if (DungeonUtils.princeKilled) "§a✔" else "§c✘"}"
         val cryptText = "§7Crypts: ${colorizeCrypts(DungeonUtils.cryptCount)}"
 
         val (trText, brText) = if (alternate) listOf(cryptText, scoreText) else listOf(scoreText, cryptText)
@@ -79,7 +79,8 @@ object MapInfo : Module(
 
     private val compactScore: HudElement by HudSetting("Compact Score", 10f, 10f, 1f, true) {
         if ((!DungeonUtils.inDungeons || (disableInBoss && DungeonUtils.inBoss)) && !it) return@HudSetting 0f to 0f
-        val scoreText = "§7Score: ${colorizeScore(DungeonUtils.score)}" + if (!DungeonUtils.mimicKilled) " §7(§6+2?§7)" else ""
+        val missing = (if (DungeonUtils.mimicKilled) 0 else 2) + (if (DungeonUtils.princeKilled) 0 else 1)
+        val scoreText = "§7Score: ${colorizeScore(DungeonUtils.score)}" + if (missing > 0) " §7(§6+${missing}?§7)" else ""
         val width = getMCTextWidth(scoreText)
         if (compactScoreBackground) roundedRectangle(-compactScoreMargin, 0, width + 2 + (compactScoreMargin * 2), 9, compactScoreColor, 0, 0)
         RenderUtils.drawText(scoreText, 1f, 1f, 1f, Colors.WHITE, center = false)
