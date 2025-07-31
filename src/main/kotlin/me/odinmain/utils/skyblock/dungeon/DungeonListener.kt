@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.odinmain.OdinMain.mc
 import me.odinmain.OdinMain.scope
+import me.odinmain.events.impl.EntityLeaveWorldEvent
 import me.odinmain.events.impl.PacketEvent
 import me.odinmain.events.impl.RoomEnterEvent
 import me.odinmain.features.impl.dungeon.LeapMenu
@@ -125,8 +126,16 @@ object DungeonListener {
 
     @SubscribeEvent
     fun onEntityJoin(event: EntityJoinWorldEvent) {
-        val teammate = dungeonTeammatesNoSelf.find { it.name == event.entity.name } ?: return
-        teammate.entity = event.entity as? EntityPlayer ?: return
+        (event.entity as? EntityPlayer)?.let { player ->
+            dungeonTeammatesNoSelf.find { it.name == player.name }?.let { it.entity = player }
+        }
+    }
+
+    @SubscribeEvent
+    fun onEntityLeave(event: EntityLeaveWorldEvent) {
+        (event.entity as? EntityPlayer)?.let { player ->
+            dungeonTeammatesNoSelf.find { it.name == player.name }?.let { it.entity = null }
+        }
     }
 
     private fun getDungeonPuzzles(tabList: List<String>) {
