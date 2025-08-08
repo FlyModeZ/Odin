@@ -25,17 +25,27 @@ object ServerUtils {
     init {
         Executor(2000, "ServerUtils") {
             if (!isOnHypixel) return@Executor
-            pingStartTime = System.nanoTime()
-            isPinging = true
             mc.netHandler?.addToSendQueue(C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS))
         }.register()
     }
 
     @SubscribeEvent
-    fun onPacket(event: PacketEvent.Receive) {
+    fun onSend(event: PacketEvent.Send) {
+        if (event.packet is C16PacketClientStatus && event.packet.status == C16PacketClientStatus.EnumState.REQUEST_STATS) {
+            if (isPinging && (System.nanoTime() - pingStartTime < 5e9)) { // 5s timeout
+                event.isCanceled = true
+            } else {
+                pingStartTime = System.nanoTime()
+                isPinging = true
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onReceive(event: PacketEvent.Receive) {
         when (event.packet) {
             is S37PacketStatistics -> {
-                averagePing = (System.nanoTime() - pingStartTime) / 1e6f
+                averagePing = (System.nanoTime() - pingStartTime) / 1e6f // ns to ms
                 isPinging = false
             }
 
@@ -45,7 +55,6 @@ object ServerUtils {
 
                 prevTime = System.currentTimeMillis()
             }
-            else -> return
         }
     }
 
@@ -53,6 +62,8 @@ object ServerUtils {
     fun onWorldLoad(event: WorldEvent.Load) {
         averagePing = 0f
         averageTps = 20f
+        pingStartTime = 0L
+        isPinging = false
         prevTime = 0L
     }
 }
